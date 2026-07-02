@@ -6,10 +6,8 @@ import Select from "@/components/ui/Select";
 import SegmentControl from "@/components/ui/SegmentControl";
 import GameIcon from "@/components/GameIcon";
 import {
-  DEFAULT_GAME_ICON,
   GAME_ICON_KEYS,
   GAME_ICON_LABELS,
-  type GameIconKey,
 } from "@/lib/game-icons";
 import type { GameType } from "@/lib/types/database";
 
