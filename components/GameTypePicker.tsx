@@ -63,8 +63,8 @@ export default function GameTypePicker({
               </Select>
             </Field>
             {selected && (
-              <div className="flex items-center gap-3 rounded-2xl bg-amber-50/80 px-4 py-3 ring-1 ring-amber-200/60 dark:bg-amber-950/30 dark:ring-amber-900/40">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-xl shadow-sm dark:bg-zinc-900">
+              <div className="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-rose-500/10 px-4 py-3 ring-1 ring-amber-400/25 dark:from-amber-500/15 dark:via-orange-500/15 dark:to-rose-500/15">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-white to-amber-50 text-xl shadow-sm ring-1 ring-white/80 dark:from-zinc-900 dark:to-zinc-800 dark:ring-zinc-700">
                   {selected.icon}
                 </span>
                 <div>
@@ -105,8 +105,8 @@ export default function GameTypePicker({
                   onClick={() => onNewGameIconChange(icon)}
                   className={`flex aspect-square items-center justify-center rounded-2xl text-2xl transition-all active:scale-95 ${
                     newGameIcon === icon
-                      ? "bg-gradient-to-b from-amber-400 to-amber-600 shadow-lg shadow-amber-600/25 ring-2 ring-amber-400/50"
-                      : "bg-white shadow-sm ring-1 ring-zinc-200/80 hover:ring-amber-300/60 dark:bg-zinc-900 dark:ring-zinc-700"
+                      ? "bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 shadow-lg shadow-orange-500/30 ring-2 ring-white/50"
+                      : "bg-gradient-to-br from-white/90 to-zinc-100/80 shadow-sm ring-1 ring-white/80 hover:ring-amber-300/50 dark:from-zinc-900/90 dark:to-zinc-800/80 dark:ring-zinc-600/50"
                   }`}
                 >
                   {icon}

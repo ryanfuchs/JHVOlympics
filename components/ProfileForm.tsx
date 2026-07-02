@@ -76,7 +76,7 @@ export default function ProfileForm({
     <div className="space-y-5">
       <Card accent="amber">
         <div className="flex items-center gap-4">
-          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-b from-amber-400 to-amber-600 text-2xl font-bold text-white shadow-lg shadow-amber-600/25">
+          <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 text-2xl font-bold text-white shadow-lg shadow-orange-500/30">
             {profile.display_name.charAt(0).toUpperCase()}
           </span>
           <div>
@@ -111,7 +111,7 @@ export default function ProfileForm({
                   <span className="text-lg">{row.game_icon}</span>
                   {row.game_name}
                 </span>
-                <span className="font-mono text-lg font-bold text-amber-600 dark:text-amber-400">
+                <span className="font-mono text-lg font-bold gradient-text-subtle">
                   {row.rating}
                 </span>
               </li>

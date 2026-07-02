@@ -51,40 +51,46 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <PageHeader eyebrow="JHV Olympics" title="Dashboard" />
 
-      <section className="overflow-hidden rounded-3xl bg-gradient-to-br from-amber-500 via-amber-600 to-orange-600 p-6 text-white shadow-xl shadow-amber-600/25">
-        <p className="text-xs font-bold uppercase tracking-wider opacity-80">
-          Your record
-        </p>
-        <p className="mt-2 font-mono text-5xl font-bold tracking-tight">
-          {myStats.wins}-{myStats.losses}-{myStats.ties}
-        </p>
-        <div className="mt-3 flex flex-wrap gap-3 text-sm opacity-90">
-          <span className="rounded-full bg-white/15 px-3 py-1">
-            {myStats.win_rate}% win rate
-          </span>
-          <span className="rounded-full bg-white/15 px-3 py-1">
-            {myStats.total_matches} games
-          </span>
-          {eloOverall?.rating != null && (
-            <span className="rounded-full bg-white/15 px-3 py-1">
-              {eloOverall.rating} ELO
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-fuchsia-600 to-amber-500 p-6 text-white shadow-2xl shadow-fuchsia-500/25">
+        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/20 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-12 -left-8 h-36 w-36 rounded-full bg-amber-300/30 blur-3xl" />
+        <div className="relative">
+          <p className="text-xs font-bold uppercase tracking-wider text-white/70">
+            Your record
+          </p>
+          <p className="mt-2 font-mono text-5xl font-bold tracking-tight drop-shadow-sm">
+            {myStats.wins}-{myStats.losses}-{myStats.ties}
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2 text-sm">
+            <span className="rounded-full bg-white/15 px-3 py-1 backdrop-blur-sm ring-1 ring-white/20">
+              {myStats.win_rate}% win rate
             </span>
-          )}
+            <span className="rounded-full bg-white/15 px-3 py-1 backdrop-blur-sm ring-1 ring-white/20">
+              {myStats.total_matches} games
+            </span>
+            {eloOverall?.rating != null && (
+              <span className="rounded-full bg-white/15 px-3 py-1 backdrop-blur-sm ring-1 ring-white/20">
+                {eloOverall.rating} ELO
+              </span>
+            )}
+          </div>
+          <Link
+            href="/matches/new"
+            className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-white/20 px-5 py-2.5 text-sm font-semibold backdrop-blur-md ring-1 ring-white/30 transition-all hover:bg-white/30 hover:shadow-lg"
+          >
+            Log a match →
+          </Link>
         </div>
-        <Link
-          href="/matches/new"
-          className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-white/20 px-5 py-2.5 text-sm font-semibold backdrop-blur transition-colors hover:bg-white/30"
-        >
-          Log a match →
-        </Link>
       </section>
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold tracking-tight">Recent matches</h2>
+          <h2 className="text-lg font-bold tracking-tight gradient-text-subtle">
+            Recent matches
+          </h2>
           <Link
             href="/matches"
-            className="text-sm font-semibold text-amber-600 dark:text-amber-400"
+            className="text-sm font-semibold gradient-text-subtle"
           >
             View all
           </Link>

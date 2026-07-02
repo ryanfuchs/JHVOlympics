@@ -17,7 +17,7 @@ export default function SegmentControl<T extends string>({
   onChange,
 }: SegmentControlProps<T>) {
   return (
-    <div className="grid gap-2 rounded-2xl bg-zinc-100/80 p-1.5 ring-1 ring-zinc-200/60 dark:bg-zinc-800/80 dark:ring-zinc-700/60">
+    <div className="grid gap-2 rounded-2xl bg-gradient-to-r from-zinc-100/90 via-white/50 to-zinc-100/90 p-1.5 ring-1 ring-white/60 backdrop-blur-sm dark:from-zinc-800/90 dark:via-zinc-900/50 dark:to-zinc-800/90 dark:ring-zinc-700/50">
       <div
         className="grid gap-1.5"
         style={{ gridTemplateColumns: `repeat(${options.length}, minmax(0, 1fr))` }}

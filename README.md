@@ -18,6 +18,14 @@ A mobile-first web app for you and your friends to log 2v2 competitions, track s
 - Leaderboards (overall and per game type)
 - Personal W-L-T record and win rate on dashboard and profile
 
+## Live app
+
+**Production:** [https://jhvolympics.vercel.app](https://jhvolympics.vercel.app)
+
+**GitHub:** [https://github.com/ryanfuchs/JHVOlympics](https://github.com/ryanfuchs/JHVOlympics)
+
+Pushes to `main` auto-deploy via Vercel.
+
 ## Local development
 
 ### 1. Clone and install

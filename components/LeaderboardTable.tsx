@@ -45,7 +45,7 @@ export default function LeaderboardTable({
     <div className={`${cardClassName} overflow-hidden p-0`}>
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-zinc-200/80 bg-zinc-50/80 text-left text-[11px] uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/50">
+          <tr className="border-b border-white/20 bg-gradient-to-r from-violet-500/10 via-fuchsia-500/10 to-amber-500/10 text-left text-[11px] uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:from-violet-500/15 dark:via-fuchsia-500/15 dark:to-amber-500/15">
             <th className="px-4 py-3.5 font-bold">#</th>
             <th className="px-4 py-3.5 font-bold">Player</th>
             <th className="px-4 py-3.5 text-right font-bold">ELO</th>
@@ -67,8 +67,8 @@ export default function LeaderboardTable({
                 {index + 1}
               </td>
               <td className="px-4 py-3.5 font-semibold">{row.display_name}</td>
-              <td className="px-4 py-3.5 text-right font-mono font-bold text-amber-600 dark:text-amber-400">
-                {row.rating ?? "—"}
+              <td className="px-4 py-3.5 text-right font-mono font-bold">
+                <span className="gradient-text-subtle">{row.rating ?? "—"}</span>
               </td>
               <td className="px-4 py-3.5 text-center font-mono text-zinc-600 dark:text-zinc-300">
                 {row.wins}-{row.losses}-{row.ties}

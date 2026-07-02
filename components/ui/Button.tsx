@@ -13,7 +13,7 @@ export default function Button({
   if (variant === "secondary") {
     return (
       <button
-        className={`inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-zinc-200/90 bg-white px-5 py-3 text-[15px] font-semibold text-zinc-700 shadow-sm transition-all hover:bg-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 ${className}`}
+        className={`inline-flex min-h-12 w-full items-center justify-center rounded-2xl border border-white/60 bg-gradient-to-br from-white/80 to-zinc-100/60 px-5 py-3 text-[15px] font-semibold text-zinc-700 shadow-sm backdrop-blur-sm transition-all hover:from-white hover:to-zinc-50 active:scale-[0.98] disabled:opacity-50 dark:border-zinc-600/50 dark:from-zinc-900/80 dark:to-zinc-950/60 dark:text-zinc-200 dark:hover:to-zinc-900 ${className}`}
         {...props}
       >
         {children}
