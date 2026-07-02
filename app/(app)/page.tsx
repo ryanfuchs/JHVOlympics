@@ -3,7 +3,8 @@ import MatchCard from "@/components/MatchCard";
 import PageHeader from "@/components/ui/PageHeader";
 import { createClient } from "@/lib/supabase/server";
 import type { MatchWithDetails } from "@/lib/types/database";
-import { cardClassName } from "@/lib/styles";
+import { cardClassName, textAccent } from "@/lib/styles";
+import { APP_NAME, APP_SLOGAN } from "@/lib/branding";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -49,11 +50,15 @@ export default async function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader eyebrow="JHV Olympics" title="Dashboard" />
+      <PageHeader
+        eyebrow={APP_NAME}
+        title="Dashboard"
+        description={APP_SLOGAN}
+      />
 
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-800 via-zinc-900 to-zinc-950 p-6 text-white shadow-2xl shadow-zinc-900/30 ring-1 ring-white/10">
-        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/20 blur-3xl" />
-        <div className="pointer-events-none absolute -bottom-12 -left-8 h-36 w-36 rounded-full bg-amber-300/30 blur-3xl" />
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-orange-800 via-orange-900 to-stone-950 p-6 text-orange-50 shadow-xl shadow-orange-950/25 ring-1 ring-orange-700/30">
+        <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-orange-500/15 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-12 -left-8 h-36 w-36 rounded-full bg-orange-600/10 blur-3xl" />
         <div className="relative">
           <p className="text-xs font-bold uppercase tracking-wider text-white/70">
             Your record
@@ -76,7 +81,7 @@ export default async function DashboardPage() {
           </div>
           <Link
             href="/matches/new"
-            className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-white/20 px-5 py-2.5 text-sm font-semibold backdrop-blur-md ring-1 ring-white/30 transition-all hover:bg-white/30 hover:shadow-lg"
+            className="mt-5 inline-flex min-h-11 items-center rounded-2xl bg-orange-950/30 px-5 py-2.5 text-sm font-semibold text-orange-50 ring-1 ring-orange-400/25 transition-all hover:bg-orange-950/45"
           >
             Log a match →
           </Link>
@@ -85,12 +90,12 @@ export default async function DashboardPage() {
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
+          <h2 className="text-lg font-bold tracking-tight text-stone-900 dark:text-stone-50">
             Recent matches
           </h2>
           <Link
             href="/matches"
-            className="text-sm font-semibold text-zinc-700 underline-offset-4 hover:underline dark:text-zinc-300"
+            className={`text-sm font-semibold underline-offset-4 hover:underline ${textAccent}`}
           >
             View all
           </Link>

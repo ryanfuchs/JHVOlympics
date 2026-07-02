@@ -14,7 +14,7 @@ const sizes = {
 export default function LogoMark({ className = "", size = "md" }: LogoMarkProps) {
   return (
     <div
-      className={`relative flex items-center justify-center rounded-2xl bg-gradient-to-br from-zinc-800 via-zinc-900 to-zinc-950 font-bold tracking-tight text-white shadow-xl shadow-zinc-900/30 ring-1 ring-white/10 dark:from-zinc-100 dark:via-white dark:to-zinc-200 dark:text-zinc-900 ${sizes[size]} ${className}`}
+      className={`relative flex items-center justify-center rounded-2xl bg-gradient-to-br from-orange-700 via-orange-800 to-orange-950 font-bold tracking-tight text-orange-50 shadow-lg shadow-orange-950/25 ring-1 ring-orange-600/30 ${sizes[size]} ${className}`}
       aria-hidden
     >
       JHV
@@ -28,7 +28,7 @@ export function SectionIcon({
   icon: LucideIcon;
 }) {
   return (
-    <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-100 text-zinc-700 ring-1 ring-zinc-200/80 dark:bg-zinc-800 dark:text-zinc-200 dark:ring-zinc-700/80">
+    <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-orange-50 text-orange-800 ring-1 ring-orange-200/80 dark:bg-orange-950/50 dark:text-orange-300 dark:ring-orange-900/50">
       <Icon size={16} strokeWidth={2} aria-hidden />
     </span>
   );

@@ -6,7 +6,7 @@ type AlertProps = {
 export default function Alert({ children, variant = "error" }: AlertProps) {
   const styles =
     variant === "success"
-      ? "border-emerald-200/80 bg-emerald-50 text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300"
+      ? "border-orange-200/80 bg-orange-50 text-orange-900 dark:border-orange-900/50 dark:bg-orange-950/40 dark:text-orange-200"
       : "border-red-200/80 bg-red-50 text-red-800 dark:border-red-900/50 dark:bg-red-950/40 dark:text-red-300";
 
   return (

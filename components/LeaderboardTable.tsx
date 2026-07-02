@@ -45,7 +45,7 @@ export default function LeaderboardTable({
     <div className={`${cardClassName} overflow-hidden p-0`}>
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-white/20 bg-gradient-to-r from-violet-500/10 via-fuchsia-500/10 to-amber-500/10 text-left text-[11px] uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:from-violet-500/15 dark:via-fuchsia-500/15 dark:to-amber-500/15">
+          <tr className="border-b border-stone-200/80 bg-orange-50/60 text-left text-[11px] uppercase tracking-wider text-stone-500 dark:border-stone-800 dark:bg-orange-950/20 dark:text-stone-400">
             <th className="px-4 py-3.5 font-bold">#</th>
             <th className="px-4 py-3.5 font-bold">Player</th>
             <th className="px-4 py-3.5 text-right font-bold">ELO</th>
@@ -59,7 +59,7 @@ export default function LeaderboardTable({
               key={row.user_id}
               className={`border-b border-zinc-100/80 last:border-0 dark:border-zinc-800/60 ${
                 row.user_id === highlightUserId
-                  ? "bg-amber-50/80 dark:bg-amber-950/25"
+                  ? "bg-orange-50/80 dark:bg-orange-950/20"
                   : ""
               }`}
             >

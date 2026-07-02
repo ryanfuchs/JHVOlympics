@@ -31,9 +31,9 @@ export default function MatchCard({ match }: { match: MatchWithDetails }) {
   return (
     <Link
       href={`/matches/${match.id}`}
-      className={`${cardClassName} group relative block overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-2xl hover:shadow-violet-500/10 active:scale-[0.99] dark:hover:shadow-violet-500/5`}
+      className={`${cardClassName} group relative block overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-xl hover:shadow-orange-950/10 active:scale-[0.99] dark:hover:shadow-orange-950/5`}
     >
-      <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-gradient-to-br from-amber-400/20 to-rose-500/20 blur-2xl transition-opacity group-hover:opacity-100 opacity-60" />
+      <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-orange-400/15 blur-2xl transition-opacity group-hover:opacity-100 opacity-60" />
 
       <div className="relative mb-4 flex items-center justify-between gap-2">
         <span
@@ -60,8 +60,8 @@ export default function MatchCard({ match }: { match: MatchWithDetails }) {
           <span
             className={
               team1Won
-                ? "bg-gradient-to-b from-emerald-500 to-teal-600 bg-clip-text text-transparent"
-                : "text-zinc-700 dark:text-zinc-200"
+                ? "text-orange-700 dark:text-orange-400"
+                : "text-stone-700 dark:text-stone-200"
             }
           >
             {match.team1_score}
@@ -72,8 +72,8 @@ export default function MatchCard({ match }: { match: MatchWithDetails }) {
           <span
             className={
               team2Won
-                ? "bg-gradient-to-b from-emerald-500 to-teal-600 bg-clip-text text-transparent"
-                : "text-zinc-700 dark:text-zinc-200"
+                ? "text-orange-700 dark:text-orange-400"
+                : "text-stone-700 dark:text-stone-200"
             }
           >
             {match.team2_score}

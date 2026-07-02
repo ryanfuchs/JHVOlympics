@@ -10,6 +10,7 @@ import {
   User,
   type LucideIcon,
 } from "lucide-react";
+import { textAccent } from "@/lib/styles";
 
 type NavItem = {
   href: string;
@@ -30,8 +31,8 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-white/20 bg-gradient-to-t from-white/95 via-white/85 to-white/70 backdrop-blur-2xl dark:border-zinc-700/30 dark:from-zinc-950/95 dark:via-zinc-950/85 dark:to-zinc-950/70">
-      <div className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-zinc-400/40 to-transparent dark:via-zinc-500/30" />
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-stone-200/90 bg-white/95 backdrop-blur-xl dark:border-stone-800/80 dark:bg-stone-950/95">
+      <div className="pointer-events-none absolute inset-x-0 -top-px h-px bg-gradient-to-r from-transparent via-orange-400/40 to-transparent" />
       <div className="mx-auto flex max-w-lg items-end justify-around px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-1">
         {navItems.map((item) => {
           const isActive =
@@ -49,10 +50,10 @@ export default function BottomNav() {
                 href={item.href}
                 className="-mt-5 flex min-w-[3.5rem] flex-1 flex-col items-center gap-1"
               >
-                <span className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-zinc-800 to-zinc-950 text-white shadow-lg shadow-zinc-900/30 ring-1 ring-white/10 dark:from-zinc-100 dark:to-zinc-300 dark:text-zinc-900">
+                <span className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-b from-orange-600 to-orange-800 text-white shadow-lg shadow-orange-950/25 ring-1 ring-orange-500/30">
                   <Icon size={22} strokeWidth={2.25} aria-hidden />
                 </span>
-                <span className="text-[11px] font-semibold text-zinc-700 dark:text-zinc-300">
+                <span className={`text-[11px] font-semibold ${textAccent}`}>
                   {item.label}
                 </span>
               </Link>
@@ -65,8 +66,8 @@ export default function BottomNav() {
               href={item.href}
               className={`flex min-h-14 min-w-[3.5rem] flex-1 flex-col items-center justify-center gap-1 rounded-xl transition-all ${
                 isActive
-                  ? "text-zinc-900 dark:text-white"
-                  : "text-zinc-400 dark:text-zinc-500"
+                  ? textAccent
+                  : "text-stone-400 dark:text-stone-500"
               }`}
             >
               <Icon

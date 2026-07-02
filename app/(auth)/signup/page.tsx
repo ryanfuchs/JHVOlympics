@@ -9,6 +9,8 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import { Field } from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
+import { textAccent } from "@/lib/styles";
+import { APP_NAME, APP_SLOGAN } from "@/lib/branding";
 
 const initialState: AuthResult = {};
 
@@ -21,14 +23,12 @@ export default function SignupPage() {
         <header className="text-center">
           <LogoMark size="lg" className="mx-auto mb-4" />
           <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
-            JHV Olympics
+            {APP_NAME}
           </p>
           <h1 className="mt-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
             Create account
           </h1>
-          <p className="mt-2 text-[15px] text-zinc-500">
-            Join your group and start logging results
-          </p>
+          <p className="mt-2 text-[15px] italic text-zinc-500">{APP_SLOGAN}</p>
         </header>
 
         <Card accent="rose">
@@ -63,7 +63,7 @@ export default function SignupPage() {
           Already registered?{" "}
           <Link
             href="/login"
-            className="font-semibold text-zinc-900 underline-offset-4 hover:underline dark:text-white"
+            className={`font-semibold underline-offset-4 hover:underline ${textAccent}`}
           >
             Sign in
           </Link>

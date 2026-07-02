@@ -109,8 +109,8 @@ export default function GameTypePicker({
                   onClick={() => onNewGameIconChange(key)}
                   className={`flex aspect-square items-center justify-center rounded-2xl transition-all active:scale-95 ${
                     newGameIcon === key
-                      ? "bg-zinc-900 text-white shadow-lg shadow-zinc-900/25 ring-2 ring-zinc-400/30 dark:bg-white dark:text-zinc-900"
-                      : "bg-white/90 text-zinc-600 shadow-sm ring-1 ring-zinc-200/80 hover:ring-zinc-300 dark:bg-zinc-900/90 dark:text-zinc-300 dark:ring-zinc-600/50"
+                      ? "bg-orange-800 text-orange-50 shadow-lg shadow-orange-950/20 ring-2 ring-orange-600/40 dark:bg-orange-700"
+                      : "bg-white/90 text-stone-600 shadow-sm ring-1 ring-stone-200/90 hover:ring-orange-200 dark:bg-stone-900/90 dark:text-stone-300 dark:ring-stone-700/70"
                   }`}
                 >
                   <GameIcon

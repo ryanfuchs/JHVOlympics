@@ -4,7 +4,7 @@ import Card from "@/components/ui/Card";
 import GameIcon from "@/components/GameIcon";
 import { createClient } from "@/lib/supabase/server";
 import type { MatchEloChange, MatchWithDetails } from "@/lib/types/database";
-import { cardClassName } from "@/lib/styles";
+import { cardClassName, textAccent } from "@/lib/styles";
 
 function getTeamPlayers(match: MatchWithDetails, team: 1 | 2): string {
   return match.match_players
@@ -58,13 +58,13 @@ export default async function MatchDetailPage({
     <div className="space-y-6">
       <Link
         href="/matches"
-        className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-amber-600 dark:text-amber-400"
+        className={`inline-flex min-h-11 items-center gap-1 text-sm font-semibold ${textAccent}`}
       >
         ← Back to matches
       </Link>
 
       <header className="text-center">
-        <span className="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-1.5 text-sm font-semibold dark:bg-zinc-800">
+        <span className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-4 py-1.5 text-sm font-semibold text-orange-900 ring-1 ring-orange-200/80 dark:bg-orange-950/40 dark:text-orange-100 dark:ring-orange-900/50">
           <GameIcon icon={m.game_types.icon} size={16} />
           {m.game_types.name}
         </span>
@@ -77,7 +77,7 @@ export default async function MatchDetailPage({
         <div className="space-y-6">
           <div className="text-center">
             <p
-              className={`text-sm ${team1Won ? "font-semibold text-emerald-600 dark:text-emerald-400" : "text-zinc-500"}`}
+              className={`text-sm ${team1Won ? "font-semibold text-orange-700 dark:text-orange-400" : "text-stone-500"}`}
             >
               Team 1 {team1Won && "· Winner"}
             </p>
@@ -99,7 +99,7 @@ export default async function MatchDetailPage({
                       <span
                         className={
                           change.rating_delta >= 0
-                            ? "text-emerald-600 dark:text-emerald-400"
+                            ? "text-orange-700 dark:text-orange-400"
                             : "text-red-600 dark:text-red-400"
                         }
                       >
@@ -111,10 +111,10 @@ export default async function MatchDetailPage({
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-4 rounded-3xl bg-zinc-100 px-6 py-5 font-mono text-5xl font-bold dark:bg-zinc-800/80">
+          <div className="flex items-center justify-center gap-4 rounded-3xl bg-orange-50 px-6 py-5 font-mono text-5xl font-bold ring-1 ring-orange-200/70 dark:bg-orange-950/25 dark:ring-orange-900/40">
             <span
               className={
-                team1Won ? "text-emerald-600 dark:text-emerald-400" : ""
+                team1Won ? "text-orange-700 dark:text-orange-400" : ""
               }
             >
               {m.team1_score}
@@ -122,7 +122,7 @@ export default async function MatchDetailPage({
             <span className="text-zinc-300 dark:text-zinc-600">–</span>
             <span
               className={
-                team2Won ? "text-emerald-600 dark:text-emerald-400" : ""
+                team2Won ? "text-orange-700 dark:text-orange-400" : ""
               }
             >
               {m.team2_score}
@@ -131,7 +131,7 @@ export default async function MatchDetailPage({
 
           <div className="text-center">
             <p
-              className={`text-sm ${team2Won ? "font-semibold text-emerald-600 dark:text-emerald-400" : "text-zinc-500"}`}
+              className={`text-sm ${team2Won ? "font-semibold text-orange-700 dark:text-orange-400" : "text-stone-500"}`}
             >
               Team 2 {team2Won && "· Winner"}
             </p>
@@ -153,7 +153,7 @@ export default async function MatchDetailPage({
                       <span
                         className={
                           change.rating_delta >= 0
-                            ? "text-emerald-600 dark:text-emerald-400"
+                            ? "text-orange-700 dark:text-orange-400"
                             : "text-red-600 dark:text-red-400"
                         }
                       >

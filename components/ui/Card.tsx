@@ -31,7 +31,7 @@ export default function Card({
 
   if (borderClass) {
     return (
-      <div className={`rounded-3xl ${borderClass} shadow-xl shadow-violet-500/10 dark:shadow-black/25`}>
+      <div className={`rounded-3xl ${borderClass} shadow-lg shadow-orange-950/10 dark:shadow-black/20`}>
         <div className={`${cardClassName} rounded-[calc(1.5rem-1px)] ${className}`}>
           {children}
         </div>
@@ -52,7 +52,7 @@ export function SectionTitle({
   icon?: LucideIcon;
 }) {
   return (
-    <h2 className="mb-4 flex items-center gap-2.5 text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+    <h2 className="mb-4 flex items-center gap-2.5 text-base font-semibold tracking-tight text-stone-900 dark:text-stone-50">
       {icon && <SectionIcon icon={icon} />}
       {children}
     </h2>
