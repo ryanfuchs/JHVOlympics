@@ -1,7 +1,9 @@
 import Link from "next/link";
+import EloHistoryChart from "@/components/EloHistoryChart";
 import MatchCard from "@/components/MatchCard";
 import PageHeader from "@/components/ui/PageHeader";
 import { createClient } from "@/lib/supabase/server";
+import { buildEloHistory, type EloChangeRow } from "@/lib/elo-history";
 import type { MatchWithDetails } from "@/lib/types/database";
 import { cardClassName, textAccent } from "@/lib/styles";
 import { APP_NAME, APP_SLOGAN } from "@/lib/branding";
@@ -12,7 +14,7 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: stats }, { data: eloOverall }, { data: recentMatches }] =
+  const [{ data: stats }, { data: eloOverall }, { data: recentMatches }, { data: eloChanges }] =
     await Promise.all([
       supabase
         .from("player_stats")
@@ -38,7 +40,21 @@ export default async function DashboardPage() {
         )
         .order("played_at", { ascending: false })
         .limit(5),
+      supabase
+        .from("match_elo_changes")
+        .select(
+          `
+          user_id,
+          rating_after,
+          matches!inner ( played_at, game_type_id ),
+          profiles!inner ( display_name )
+        `
+        ),
     ]);
+
+  const { players, chartData } = buildEloHistory(
+    (eloChanges as EloChangeRow[] | null) ?? []
+  );
 
   const myStats = stats ?? {
     wins: 0,
@@ -86,6 +102,22 @@ export default async function DashboardPage() {
             Log a match →
           </Link>
         </div>
+      </section>
+
+      <section className="space-y-4">
+        <div>
+          <h2 className="text-lg font-bold tracking-tight text-stone-900 dark:text-stone-50">
+            ELO evolution
+          </h2>
+          <p className="mt-1 text-sm text-stone-500 dark:text-stone-400">
+            Overall rating over time for every player
+          </p>
+        </div>
+        <EloHistoryChart
+          players={players}
+          chartData={chartData}
+          currentUserId={user!.id}
+        />
       </section>
 
       <section className="space-y-4">
