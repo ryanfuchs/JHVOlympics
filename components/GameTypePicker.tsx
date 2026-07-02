@@ -133,5 +133,3 @@ export default function GameTypePicker({
     </div>
   );
 }
-
-export { DEFAULT_GAME_ICON, type GameIconKey };

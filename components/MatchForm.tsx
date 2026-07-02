@@ -2,11 +2,12 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import GameTypePicker, {
-  DEFAULT_GAME_ICON,
-  type GameMode,
-} from "@/components/GameTypePicker";
+import GameTypePicker, { type GameMode } from "@/components/GameTypePicker";
 import PlayerPicker from "@/components/PlayerPicker";
+import {
+  DEFAULT_GAME_ICON,
+  type GameIconKey,
+} from "@/lib/game-icons";
 import Alert from "@/components/ui/Alert";
 import Button from "@/components/ui/Button";
 import Card, { SectionTitle } from "@/components/ui/Card";
@@ -45,7 +46,7 @@ export default function MatchForm({
   );
   const [notes, setNotes] = useState("");
   const [newGameName, setNewGameName] = useState("");
-  const [newGameIcon, setNewGameIcon] = useState(DEFAULT_GAME_ICON);
+  const [newGameIcon, setNewGameIcon] = useState<GameIconKey>(DEFAULT_GAME_ICON);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -166,7 +167,7 @@ export default function MatchForm({
             newGameName={newGameName}
             onNewGameNameChange={setNewGameName}
             newGameIcon={newGameIcon}
-            onNewGameIconChange={setNewGameIcon}
+            onNewGameIconChange={(icon) => setNewGameIcon(icon as GameIconKey)}
           />
           <Field label="Date played">
             <Input
