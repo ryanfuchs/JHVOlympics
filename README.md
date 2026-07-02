@@ -1,6 +1,8 @@
 # JHVOlympics
 
-A mobile-first web app for you and your friends to log 2v2 competitions, track scores by game type, and view leaderboards with win rates.
+[![CI](https://github.com/ryanfuchs/JHVOlympics/actions/workflows/ci.yml/badge.svg)](https://github.com/ryanfuchs/JHVOlympics/actions/workflows/ci.yml)
+
+A mobile-first web app for logging 2v2 competitions, tracking scores by game type, and viewing ELO-based leaderboards.
 
 ## Stack
 
@@ -24,7 +26,15 @@ A mobile-first web app for you and your friends to log 2v2 competitions, track s
 
 **GitHub:** [https://github.com/ryanfuchs/JHVOlympics](https://github.com/ryanfuchs/JHVOlympics)
 
-Pushes to `main` auto-deploy via Vercel.
+Pushes to `main` run GitHub Actions (lint + build), then auto-deploy to Vercel.
+
+## CI/CD
+
+| Stage | Tool | Trigger |
+|-------|------|---------|
+| Lint & build | GitHub Actions (`.github/workflows/ci.yml`) | Push / PR to `main` |
+| Production deploy | Vercel (GitHub integration) | Push to `main` after CI |
+| Database | Supabase SQL migrations | Manual via SQL Editor |
 
 ## Local development
 
@@ -53,6 +63,7 @@ In the Supabase dashboard, open **SQL Editor** and run the contents of:
 ```
 supabase/migrations/001_initial_schema.sql
 supabase/migrations/002_elo_ratings.sql
+supabase/migrations/003_icon_keys.sql
 ```
 
 Or, if you use the Supabase CLI:

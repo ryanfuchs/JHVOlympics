@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import GameIcon from "@/components/GameIcon";
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Alert from "@/components/ui/Alert";
@@ -108,7 +109,7 @@ export default function ProfileForm({
                 className="flex items-center justify-between rounded-2xl bg-zinc-50 px-4 py-3 dark:bg-zinc-800/50"
               >
                 <span className="flex items-center gap-2 text-sm font-medium">
-                  <span className="text-lg">{row.game_icon}</span>
+                  <GameIcon icon={row.game_icon} size={16} />
                   {row.game_name}
                 </span>
                 <span className="font-mono text-lg font-bold gradient-text-subtle">

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import GameIcon from "@/components/GameIcon";
 import type { MatchWithDetails } from "@/lib/types/database";
 import {
   cardClassName,
@@ -38,7 +39,7 @@ export default function MatchCard({ match }: { match: MatchWithDetails }) {
         <span
           className={`inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold text-zinc-800 dark:text-zinc-100 ${gradientBadge}`}
         >
-          <span>{match.game_types.icon}</span>
+          <GameIcon icon={match.game_types.icon} size={14} />
           {match.game_types.name}
         </span>
         <span className="text-xs font-medium text-zinc-400">
@@ -87,8 +88,8 @@ export default function MatchCard({ match }: { match: MatchWithDetails }) {
       </div>
 
       {isTie && (
-        <p className="relative mt-3 text-center text-xs font-semibold uppercase tracking-wider gradient-text-subtle">
-          Tie game
+        <p className="relative mt-3 text-center text-xs font-semibold uppercase tracking-wider text-zinc-500">
+          Tie
         </p>
       )}
     </Link>

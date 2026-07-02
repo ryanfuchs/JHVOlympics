@@ -12,11 +12,11 @@ export default function PageHeader({
   return (
     <header className="mb-6">
       {eyebrow && (
-        <p className="text-xs font-bold uppercase tracking-[0.2em] gradient-text-subtle">
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
           {eyebrow}
         </p>
       )}
-      <h1 className="mt-1 text-3xl font-bold tracking-tight gradient-text">
+      <h1 className="mt-1 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
         {title}
       </h1>
       {description && (

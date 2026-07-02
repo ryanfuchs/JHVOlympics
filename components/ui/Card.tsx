@@ -1,3 +1,5 @@
+import type { LucideIcon } from "lucide-react";
+import { SectionIcon } from "@/components/LogoMark";
 import {
   cardClassName,
   gradientBorderAmber,
@@ -47,16 +49,12 @@ export function SectionTitle({
   icon,
 }: {
   children: React.ReactNode;
-  icon?: string;
+  icon?: LucideIcon;
 }) {
   return (
-    <h2 className="mb-4 flex items-center gap-2 text-base font-bold tracking-tight">
-      {icon && (
-        <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-amber-400/20 via-orange-500/20 to-rose-500/20 text-lg ring-1 ring-amber-400/20">
-          {icon}
-        </span>
-      )}
-      <span className="gradient-text-subtle">{children}</span>
+    <h2 className="mb-4 flex items-center gap-2.5 text-base font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+      {icon && <SectionIcon icon={icon} />}
+      {children}
     </h2>
   );
 }

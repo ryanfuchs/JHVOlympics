@@ -12,7 +12,7 @@ CREATE TABLE profiles (
 CREATE TABLE game_types (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   name TEXT NOT NULL UNIQUE,
-  icon TEXT NOT NULL DEFAULT '🏆',
+  icon TEXT NOT NULL DEFAULT 'trophy',
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -71,12 +71,12 @@ CREATE TRIGGER on_auth_user_created
 
 -- Seed game types
 INSERT INTO game_types (name, icon) VALUES
-  ('Ping Pong', '🏓'),
-  ('Basketball', '🏀'),
-  ('FIFA', '⚽'),
-  ('Tennis', '🎾'),
-  ('Volleyball', '🏐'),
-  ('Other', '🏆');
+  ('Ping Pong', 'target'),
+  ('Basketball', 'dumbbell'),
+  ('FIFA', 'target'),
+  ('Tennis', 'target'),
+  ('Volleyball', 'users'),
+  ('Other', 'trophy');
 
 -- Stats: per-match result per player
 CREATE OR REPLACE VIEW player_match_results AS

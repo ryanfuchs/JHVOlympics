@@ -67,8 +67,8 @@ export default function LeaderboardTable({
                 {index + 1}
               </td>
               <td className="px-4 py-3.5 font-semibold">{row.display_name}</td>
-              <td className="px-4 py-3.5 text-right font-mono font-bold">
-                <span className="gradient-text-subtle">{row.rating ?? "—"}</span>
+              <td className="px-4 py-3.5 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">
+                {row.rating ?? "—"}
               </td>
               <td className="px-4 py-3.5 text-center font-mono text-zinc-600 dark:text-zinc-300">
                 {row.wins}-{row.losses}-{row.ties}

@@ -51,7 +51,7 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       <PageHeader eyebrow="JHV Olympics" title="Dashboard" />
 
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-violet-600 via-fuchsia-600 to-amber-500 p-6 text-white shadow-2xl shadow-fuchsia-500/25">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-zinc-800 via-zinc-900 to-zinc-950 p-6 text-white shadow-2xl shadow-zinc-900/30 ring-1 ring-white/10">
         <div className="pointer-events-none absolute -right-10 -top-10 h-40 w-40 rounded-full bg-white/20 blur-3xl" />
         <div className="pointer-events-none absolute -bottom-12 -left-8 h-36 w-36 rounded-full bg-amber-300/30 blur-3xl" />
         <div className="relative">
@@ -85,12 +85,12 @@ export default async function DashboardPage() {
 
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-bold tracking-tight gradient-text-subtle">
+          <h2 className="text-lg font-bold tracking-tight text-zinc-900 dark:text-white">
             Recent matches
           </h2>
           <Link
             href="/matches"
-            className="text-sm font-semibold gradient-text-subtle"
+            className="text-sm font-semibold text-zinc-700 underline-offset-4 hover:underline dark:text-zinc-300"
           >
             View all
           </Link>

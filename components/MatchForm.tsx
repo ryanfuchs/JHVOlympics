@@ -2,7 +2,10 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import GameTypePicker, { type GameMode } from "@/components/GameTypePicker";
+import GameTypePicker, {
+  DEFAULT_GAME_ICON,
+  type GameMode,
+} from "@/components/GameTypePicker";
 import PlayerPicker from "@/components/PlayerPicker";
 import Alert from "@/components/ui/Alert";
 import Button from "@/components/ui/Button";
@@ -12,6 +15,7 @@ import Input from "@/components/ui/Input";
 import Textarea from "@/components/ui/Textarea";
 import type { GameType, Profile } from "@/lib/types/database";
 import { createClient } from "@/lib/supabase/client";
+import { Gamepad2, Trophy, Users } from "lucide-react";
 
 type MatchFormProps = {
   gameTypes: GameType[];
@@ -41,7 +45,7 @@ export default function MatchForm({
   );
   const [notes, setNotes] = useState("");
   const [newGameName, setNewGameName] = useState("");
-  const [newGameIcon, setNewGameIcon] = useState("🏆");
+  const [newGameIcon, setNewGameIcon] = useState(DEFAULT_GAME_ICON);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -151,7 +155,7 @@ export default function MatchForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       <Card accent="amber">
-        <SectionTitle icon="🎮">Game</SectionTitle>
+        <SectionTitle icon={Gamepad2}>Game</SectionTitle>
         <div className="space-y-4">
           <GameTypePicker
             gameTypes={gameTypes}
@@ -176,7 +180,7 @@ export default function MatchForm({
       </Card>
 
       <Card accent="sky">
-        <SectionTitle icon="🔵">Team 1</SectionTitle>
+        <SectionTitle icon={Users}>Team 1</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
           <PlayerPicker
             label="Player 1"
@@ -196,7 +200,7 @@ export default function MatchForm({
       </Card>
 
       <Card accent="rose">
-        <SectionTitle icon="🔴">Team 2</SectionTitle>
+        <SectionTitle icon={Users}>Team 2</SectionTitle>
         <div className="grid gap-4 sm:grid-cols-2">
           <PlayerPicker
             label="Player 1"
@@ -216,7 +220,7 @@ export default function MatchForm({
       </Card>
 
       <Card>
-        <SectionTitle icon="🏆">Final score</SectionTitle>
+        <SectionTitle icon={Trophy}>Final score</SectionTitle>
         <div className="flex items-center gap-3">
           <Input
             type="number"

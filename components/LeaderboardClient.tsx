@@ -3,6 +3,7 @@
 import LeaderboardTable, {
   type LeaderboardRow,
 } from "@/components/LeaderboardTable";
+import GameIcon from "@/components/GameIcon";
 import PageHeader from "@/components/ui/PageHeader";
 import SegmentControl from "@/components/ui/SegmentControl";
 import type {
@@ -121,11 +122,16 @@ export default function LeaderboardClient({
             key={gt.id}
             type="button"
             onClick={() => setSelectedGame(gt.id)}
-            className={`${chipClassName} ${
+            className={`${chipClassName} gap-1.5 ${
               selectedGame === gt.id ? chipActiveClassName : chipInactiveClassName
             }`}
           >
-            {gt.icon} {gt.name}
+            <GameIcon
+              icon={gt.icon}
+              size={14}
+              className={selectedGame === gt.id ? "text-white" : undefined}
+            />
+            {gt.name}
           </button>
         ))}
       </div>

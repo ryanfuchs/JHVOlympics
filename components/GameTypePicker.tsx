@@ -4,6 +4,13 @@ import { Field } from "@/components/ui/Field";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import SegmentControl from "@/components/ui/SegmentControl";
+import GameIcon from "@/components/GameIcon";
+import {
+  DEFAULT_GAME_ICON,
+  GAME_ICON_KEYS,
+  GAME_ICON_LABELS,
+  type GameIconKey,
+} from "@/lib/game-icons";
 import type { GameType } from "@/lib/types/database";
 
 export type GameMode = "existing" | "new";
@@ -19,8 +26,6 @@ type GameTypePickerProps = {
   newGameIcon: string;
   onNewGameIconChange: (icon: string) => void;
 };
-
-const QUICK_ICONS = ["🏓", "🏀", "⚽", "🎾", "🏐", "🎯", "🎮", "🏆"];
 
 export default function GameTypePicker({
   gameTypes,
@@ -57,28 +62,28 @@ export default function GameTypePicker({
               >
                 {gameTypes.map((gt) => (
                   <option key={gt.id} value={gt.id}>
-                    {gt.icon}  {gt.name}
+                    {gt.name}
                   </option>
                 ))}
               </Select>
             </Field>
             {selected && (
-              <div className="flex items-center gap-3 rounded-2xl bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-rose-500/10 px-4 py-3 ring-1 ring-amber-400/25 dark:from-amber-500/15 dark:via-orange-500/15 dark:to-rose-500/15">
-                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-white to-amber-50 text-xl shadow-sm ring-1 ring-white/80 dark:from-zinc-900 dark:to-zinc-800 dark:ring-zinc-700">
-                  {selected.icon}
+              <div className="flex items-center gap-3 rounded-2xl bg-zinc-50 px-4 py-3 ring-1 ring-zinc-200/80 dark:bg-zinc-800/50 dark:ring-zinc-700/80">
+                <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm ring-1 ring-zinc-200/80 dark:bg-zinc-900 dark:ring-zinc-700">
+                  <GameIcon icon={selected.icon} size={20} />
                 </span>
                 <div>
                   <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-50">
                     {selected.name}
                   </p>
-                  <p className="text-xs text-zinc-500">Ready to log</p>
+                  <p className="text-xs text-zinc-500">Selected</p>
                 </div>
               </div>
             )}
           </div>
         ) : (
           <p className="rounded-2xl border border-dashed border-zinc-300 px-4 py-4 text-center text-sm text-zinc-500 dark:border-zinc-700">
-            No games yet — tap <strong>New game</strong> to add the first one.
+            No games yet — use <strong>New game</strong> to add the first one.
           </p>
         )
       ) : (
@@ -88,28 +93,37 @@ export default function GameTypePicker({
               type="text"
               value={newGameName}
               onChange={(e) => onNewGameNameChange(e.target.value)}
-              placeholder="e.g. Beer Pong, Darts…"
+              placeholder="e.g. Darts, Pool, Chess"
               required={mode === "new"}
             />
           </Field>
 
           <div>
             <span className="mb-2 block text-xs font-semibold uppercase tracking-wider text-zinc-500">
-              Pick an icon
+              Category icon
             </span>
             <div className="grid grid-cols-4 gap-2 sm:grid-cols-8">
-              {QUICK_ICONS.map((icon) => (
+              {GAME_ICON_KEYS.map((key) => (
                 <button
-                  key={icon}
+                  key={key}
                   type="button"
-                  onClick={() => onNewGameIconChange(icon)}
-                  className={`flex aspect-square items-center justify-center rounded-2xl text-2xl transition-all active:scale-95 ${
-                    newGameIcon === icon
-                      ? "bg-gradient-to-br from-amber-400 via-orange-500 to-rose-500 shadow-lg shadow-orange-500/30 ring-2 ring-white/50"
-                      : "bg-gradient-to-br from-white/90 to-zinc-100/80 shadow-sm ring-1 ring-white/80 hover:ring-amber-300/50 dark:from-zinc-900/90 dark:to-zinc-800/80 dark:ring-zinc-600/50"
+                  title={GAME_ICON_LABELS[key]}
+                  onClick={() => onNewGameIconChange(key)}
+                  className={`flex aspect-square items-center justify-center rounded-2xl transition-all active:scale-95 ${
+                    newGameIcon === key
+                      ? "bg-zinc-900 text-white shadow-lg shadow-zinc-900/25 ring-2 ring-zinc-400/30 dark:bg-white dark:text-zinc-900"
+                      : "bg-white/90 text-zinc-600 shadow-sm ring-1 ring-zinc-200/80 hover:ring-zinc-300 dark:bg-zinc-900/90 dark:text-zinc-300 dark:ring-zinc-600/50"
                   }`}
                 >
-                  {icon}
+                  <GameIcon
+                    icon={key}
+                    size={20}
+                    className={
+                      newGameIcon === key
+                        ? "text-inherit"
+                        : "text-zinc-600 dark:text-zinc-300"
+                    }
+                  />
                 </button>
               ))}
             </div>
@@ -119,3 +133,5 @@ export default function GameTypePicker({
     </div>
   );
 }
+
+export { DEFAULT_GAME_ICON, type GameIconKey };

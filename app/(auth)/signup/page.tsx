@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useActionState } from "react";
 import { signUpAction, type AuthResult } from "@/app/(auth)/actions";
+import LogoMark from "@/components/LogoMark";
 import Alert from "@/components/ui/Alert";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
@@ -16,22 +17,17 @@ export default function SignupPage() {
 
   return (
     <div className="relative flex min-h-full flex-col items-center justify-center px-4 py-12">
-      <div className="pointer-events-none absolute right-8 top-20 h-40 w-40 rounded-full bg-gradient-to-br from-cyan-400/25 via-violet-500/20 to-rose-500/25 blur-3xl" />
-
       <div className="relative w-full max-w-sm space-y-6">
         <header className="text-center">
-          <div className="relative mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-br from-violet-500 via-fuchsia-500 to-amber-400 text-3xl shadow-xl shadow-fuchsia-500/35">
-            <span className="absolute inset-0 rounded-3xl bg-gradient-to-t from-black/10 to-white/25" />
-            <span className="relative">🏆</span>
-          </div>
-          <p className="text-xs font-bold uppercase tracking-[0.2em] gradient-text-subtle">
+          <LogoMark size="lg" className="mx-auto mb-4" />
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
             JHV Olympics
           </p>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight gradient-text">
-            Join the league
+          <h1 className="mt-2 text-3xl font-bold tracking-tight text-zinc-900 dark:text-white">
+            Create account
           </h1>
           <p className="mt-2 text-[15px] text-zinc-500">
-            Create an account to start logging games
+            Join your group and start logging results
           </p>
         </header>
 
@@ -64,8 +60,11 @@ export default function SignupPage() {
         </Card>
 
         <p className="text-center text-sm text-zinc-500">
-          Already have an account?{" "}
-          <Link href="/login" className="font-semibold gradient-text-subtle">
+          Already registered?{" "}
+          <Link
+            href="/login"
+            className="font-semibold text-zinc-900 underline-offset-4 hover:underline dark:text-white"
+          >
             Sign in
           </Link>
         </p>

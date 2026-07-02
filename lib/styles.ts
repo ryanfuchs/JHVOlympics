@@ -14,13 +14,13 @@ export const cardClassName =
   "rounded-3xl border border-white/50 bg-gradient-to-br from-white/85 to-white/60 p-5 shadow-xl shadow-violet-500/8 backdrop-blur-xl dark:border-zinc-700/40 dark:from-zinc-900/85 dark:to-zinc-950/70 dark:shadow-black/30";
 
 export const buttonPrimaryClassName =
-  "inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 px-5 py-3 text-[15px] font-semibold text-white shadow-lg shadow-orange-500/30 transition-all hover:from-amber-300 hover:via-orange-400 hover:to-rose-400 hover:shadow-orange-500/40 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100";
+  "inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-gradient-to-b from-zinc-800 to-zinc-950 px-5 py-3 text-[15px] font-semibold text-white shadow-lg shadow-zinc-900/20 transition-all hover:from-zinc-700 hover:to-zinc-900 active:scale-[0.98] disabled:opacity-50 disabled:active:scale-100 dark:from-zinc-100 dark:to-zinc-300 dark:text-zinc-900 dark:shadow-zinc-950/10 dark:hover:from-white dark:hover:to-zinc-200";
 
 export const chipClassName =
   "inline-flex shrink-0 items-center rounded-full px-4 py-2 text-sm font-medium transition-all";
 
 export const chipActiveClassName =
-  "bg-gradient-to-r from-amber-400 via-orange-500 to-rose-500 text-white shadow-md shadow-orange-500/25";
+  "bg-zinc-900 text-white shadow-md shadow-zinc-900/20 dark:bg-white dark:text-zinc-900";
 
 export const chipInactiveClassName =
   "bg-white/70 text-zinc-600 shadow-sm ring-1 ring-white/80 backdrop-blur-sm dark:bg-zinc-800/70 dark:text-zinc-300 dark:ring-zinc-600/50";

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import Card from "@/components/ui/Card";
+import GameIcon from "@/components/GameIcon";
 import { createClient } from "@/lib/supabase/server";
 import type { MatchEloChange, MatchWithDetails } from "@/lib/types/database";
 import { cardClassName } from "@/lib/styles";
@@ -64,7 +65,8 @@ export default async function MatchDetailPage({
 
       <header className="text-center">
         <span className="inline-flex items-center gap-2 rounded-full bg-zinc-100 px-4 py-1.5 text-sm font-semibold dark:bg-zinc-800">
-          {m.game_types.icon} {m.game_types.name}
+          <GameIcon icon={m.game_types.icon} size={16} />
+          {m.game_types.name}
         </span>
         <p className="mt-2 text-xs font-medium text-zinc-400">
           {new Date(m.played_at).toLocaleString()}
