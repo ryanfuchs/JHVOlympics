@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# JHVOlympics
 
-## Getting Started
+A mobile-first web app for you and your friends to log 2v2 competitions, track scores by game type, and view leaderboards with win rates.
 
-First, run the development server:
+## Stack
+
+- **Frontend:** Next.js 16, React, TypeScript, Tailwind CSS
+- **Backend:** Supabase (Auth + Postgres + Row Level Security)
+- **Hosting:** Vercel (frontend) + Supabase (database)
+
+## Features
+
+- Email/password signup and login
+- Log matches with game type, 4 players (2 per side), scores, and notes
+- Match history and detail views
+- Leaderboards (overall and per game type)
+- Personal W-L-T record and win rate on dashboard and profile
+
+## Local development
+
+### 1. Clone and install
+
+```bash
+git clone https://github.com/YOUR_USERNAME/JHVOlympics.git
+cd JHVOlympics
+npm install
+```
+
+### 2. Create a Supabase project
+
+1. Go to [supabase.com](https://supabase.com) and create a new project
+2. In **Project Settings → API**, copy the **Project URL** and **anon public** key
+3. Copy `.env.local.example` to `.env.local` and fill in the values:
+
+```bash
+cp .env.local.example .env.local
+```
+
+### 3. Run the database migration
+
+In the Supabase dashboard, open **SQL Editor** and run the contents of:
+
+```
+supabase/migrations/001_initial_schema.sql
+```
+
+Or, if you use the Supabase CLI:
+
+```bash
+supabase link --project-ref YOUR_PROJECT_REF
+supabase db push
+```
+
+### 4. Configure auth redirect URLs
+
+In Supabase **Authentication → URL Configuration**, add:
+
+- Site URL: `http://localhost:3000` (for local dev)
+- Redirect URLs: `http://localhost:3000/auth/callback`
+
+When deployed, also add your Vercel URL (e.g. `https://jhvolympics.vercel.app/auth/callback`).
+
+### 5. Start the dev server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy to Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Push this repo to GitHub
+2. Import the repo at [vercel.com/new](https://vercel.com/new)
+3. Add environment variables:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy
+5. Add your Vercel domain to Supabase auth redirect URLs
 
-## Learn More
+## Invite friends
 
-To learn more about Next.js, take a look at the following resources:
+Share the deployed URL. Friends create an account with email/password, then appear in the player picker when logging matches.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+app/
+  (app)/          # Protected app routes (dashboard, matches, leaderboard, profile)
+  (auth)/         # Login and signup
+  auth/callback/  # Supabase auth callback
+components/       # UI components
+lib/supabase/     # Supabase client helpers
+supabase/migrations/  # Database schema
+```
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Private — for friends only.
