@@ -1,55 +1,79 @@
-import type { PlayerStats } from "@/lib/types/database";
+import { cardClassName } from "@/lib/styles";
+
+export type LeaderboardRow = {
+  user_id: string;
+  display_name: string;
+  wins: number;
+  losses: number;
+  ties: number;
+  win_rate: number;
+  total_matches: number;
+  rating: number | null;
+};
 
 type LeaderboardTableProps = {
-  stats: PlayerStats[];
+  rows: LeaderboardRow[];
   highlightUserId?: string;
+  sortBy: "elo" | "wins";
 };
 
 export default function LeaderboardTable({
-  stats,
+  rows,
   highlightUserId,
+  sortBy,
 }: LeaderboardTableProps) {
-  if (stats.length === 0) {
+  if (rows.length === 0) {
     return (
-      <p className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-zinc-500 dark:border-zinc-700">
+      <p className={`${cardClassName} border-dashed text-center text-sm text-zinc-500`}>
         No stats yet. Log your first match!
       </p>
     );
   }
 
-  const sorted = [...stats].sort((a, b) => {
+  const sorted = [...rows].sort((a, b) => {
+    if (sortBy === "elo") {
+      if ((b.rating ?? 0) !== (a.rating ?? 0)) {
+        return (b.rating ?? 0) - (a.rating ?? 0);
+      }
+    }
     if (b.wins !== a.wins) return b.wins - a.wins;
     if (b.win_rate !== a.win_rate) return b.win_rate - a.win_rate;
     return b.total_matches - a.total_matches;
   });
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
+    <div className={`${cardClassName} overflow-hidden p-0`}>
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-zinc-200 bg-zinc-50 text-left text-xs uppercase tracking-wide text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/50">
-            <th className="px-4 py-3 font-semibold">#</th>
-            <th className="px-4 py-3 font-semibold">Player</th>
-            <th className="px-4 py-3 text-center font-semibold">W-L-T</th>
-            <th className="px-4 py-3 text-right font-semibold">Win%</th>
+          <tr className="border-b border-zinc-200/80 bg-zinc-50/80 text-left text-[11px] uppercase tracking-wider text-zinc-500 dark:border-zinc-800 dark:bg-zinc-900/50">
+            <th className="px-4 py-3.5 font-bold">#</th>
+            <th className="px-4 py-3.5 font-bold">Player</th>
+            <th className="px-4 py-3.5 text-right font-bold">ELO</th>
+            <th className="px-4 py-3.5 text-center font-bold">W-L-T</th>
+            <th className="px-4 py-3.5 text-right font-bold">Win%</th>
           </tr>
         </thead>
         <tbody>
           {sorted.map((row, index) => (
             <tr
               key={row.user_id}
-              className={`border-b border-zinc-100 last:border-0 dark:border-zinc-800/80 ${
+              className={`border-b border-zinc-100/80 last:border-0 dark:border-zinc-800/60 ${
                 row.user_id === highlightUserId
-                  ? "bg-amber-50 dark:bg-amber-950/30"
+                  ? "bg-amber-50/80 dark:bg-amber-950/25"
                   : ""
               }`}
             >
-              <td className="px-4 py-3 font-mono text-zinc-400">{index + 1}</td>
-              <td className="px-4 py-3 font-medium">{row.display_name}</td>
-              <td className="px-4 py-3 text-center font-mono">
+              <td className="px-4 py-3.5 font-mono text-xs text-zinc-400">
+                {index + 1}
+              </td>
+              <td className="px-4 py-3.5 font-semibold">{row.display_name}</td>
+              <td className="px-4 py-3.5 text-right font-mono font-bold text-amber-600 dark:text-amber-400">
+                {row.rating ?? "—"}
+              </td>
+              <td className="px-4 py-3.5 text-center font-mono text-zinc-600 dark:text-zinc-300">
                 {row.wins}-{row.losses}-{row.ties}
               </td>
-              <td className="px-4 py-3 text-right font-mono font-semibold">
+              <td className="px-4 py-3.5 text-right font-mono font-medium">
                 {row.win_rate}%
               </td>
             </tr>

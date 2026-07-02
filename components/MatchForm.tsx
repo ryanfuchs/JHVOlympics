@@ -2,7 +2,14 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import GameTypePicker, { type GameMode } from "@/components/GameTypePicker";
 import PlayerPicker from "@/components/PlayerPicker";
+import Alert from "@/components/ui/Alert";
+import Button from "@/components/ui/Button";
+import Card, { SectionTitle } from "@/components/ui/Card";
+import { Field } from "@/components/ui/Field";
+import Input from "@/components/ui/Input";
+import Textarea from "@/components/ui/Textarea";
 import type { GameType, Profile } from "@/lib/types/database";
 import { createClient } from "@/lib/supabase/client";
 
@@ -13,12 +20,16 @@ type MatchFormProps = {
 };
 
 export default function MatchForm({
-  gameTypes,
+  gameTypes: initialGameTypes,
   profiles,
   currentUserId,
 }: MatchFormProps) {
   const router = useRouter();
-  const [gameTypeId, setGameTypeId] = useState(gameTypes[0]?.id ?? "");
+  const [gameTypes, setGameTypes] = useState(initialGameTypes);
+  const [gameMode, setGameMode] = useState<GameMode>(
+    initialGameTypes.length > 0 ? "existing" : "new"
+  );
+  const [gameTypeId, setGameTypeId] = useState(initialGameTypes[0]?.id ?? "");
   const [team1Player1, setTeam1Player1] = useState(currentUserId);
   const [team1Player2, setTeam1Player2] = useState("");
   const [team2Player1, setTeam2Player1] = useState("");
@@ -30,7 +41,7 @@ export default function MatchForm({
   );
   const [notes, setNotes] = useState("");
   const [newGameName, setNewGameName] = useState("");
-  const [showNewGame, setShowNewGame] = useState(false);
+  const [newGameIcon, setNewGameIcon] = useState("🏆");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
@@ -62,24 +73,43 @@ export default function MatchForm({
       return;
     }
 
+    if (gameMode === "existing" && !gameTypeId) {
+      setError("Please select a game type.");
+      return;
+    }
+    if (gameMode === "new" && !newGameName.trim()) {
+      setError("Please enter a name for the new game.");
+      return;
+    }
+
     setLoading(true);
     const supabase = createClient();
 
     let resolvedGameTypeId = gameTypeId;
 
-    if (showNewGame && newGameName.trim()) {
+    if (gameMode === "new") {
       const { data: newType, error: typeError } = await supabase
         .from("game_types")
-        .insert({ name: newGameName.trim(), icon: "🏆" })
-        .select("id")
+        .insert({ name: newGameName.trim(), icon: newGameIcon })
+        .select("*")
         .single();
 
       if (typeError) {
-        setError(typeError.message);
+        setError(
+          typeError.code === "23505"
+            ? "A game with that name already exists — pick it from Existing."
+            : typeError.message
+        );
         setLoading(false);
         return;
       }
+
       resolvedGameTypeId = newType.id;
+      setGameTypes((prev) =>
+        [...prev, newType].sort((a, b) => a.name.localeCompare(b.name))
+      );
+      setGameTypeId(newType.id);
+      setGameMode("existing");
     }
 
     const { data: match, error: matchError } = await supabase
@@ -119,68 +149,35 @@ export default function MatchForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Game</h2>
-        {!showNewGame ? (
-          <div className="space-y-2">
-            <select
-              value={gameTypeId}
-              onChange={(e) => setGameTypeId(e.target.value)}
-              className="w-full min-h-11 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-base dark:border-zinc-700 dark:bg-zinc-900"
-              required
-            >
-              {gameTypes.map((gt) => (
-                <option key={gt.id} value={gt.id}>
-                  {gt.icon} {gt.name}
-                </option>
-              ))}
-            </select>
-            <button
-              type="button"
-              onClick={() => setShowNewGame(true)}
-              className="text-sm text-amber-600 dark:text-amber-400"
-            >
-              + Add new game type
-            </button>
-          </div>
-        ) : (
-          <div className="space-y-2">
-            <input
-              type="text"
-              value={newGameName}
-              onChange={(e) => setNewGameName(e.target.value)}
-              placeholder="New game name"
-              className="w-full min-h-11 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-base dark:border-zinc-700 dark:bg-zinc-900"
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <Card accent="amber">
+        <SectionTitle icon="🎮">Game</SectionTitle>
+        <div className="space-y-4">
+          <GameTypePicker
+            gameTypes={gameTypes}
+            mode={gameMode}
+            onModeChange={setGameMode}
+            selectedGameTypeId={gameTypeId}
+            onSelectedGameTypeIdChange={setGameTypeId}
+            newGameName={newGameName}
+            onNewGameNameChange={setNewGameName}
+            newGameIcon={newGameIcon}
+            onNewGameIconChange={setNewGameIcon}
+          />
+          <Field label="Date played">
+            <Input
+              type="datetime-local"
+              value={playedAt}
+              onChange={(e) => setPlayedAt(e.target.value)}
               required
             />
-            <button
-              type="button"
-              onClick={() => setShowNewGame(false)}
-              className="text-sm text-zinc-500"
-            >
-              Use existing game type
-            </button>
-          </div>
-        )}
+          </Field>
+        </div>
+      </Card>
 
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-            Date played
-          </span>
-          <input
-            type="datetime-local"
-            value={playedAt}
-            onChange={(e) => setPlayedAt(e.target.value)}
-            className="w-full min-h-11 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-base dark:border-zinc-700 dark:bg-zinc-900"
-            required
-          />
-        </label>
-      </section>
-
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Team 1</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
+      <Card accent="sky">
+        <SectionTitle icon="🔵">Team 1</SectionTitle>
+        <div className="grid gap-4 sm:grid-cols-2">
           <PlayerPicker
             label="Player 1"
             profiles={profiles}
@@ -196,11 +193,11 @@ export default function MatchForm({
             excludeIds={selectedIds.filter((id) => id !== team1Player2)}
           />
         </div>
-      </section>
+      </Card>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Team 2</h2>
-        <div className="grid gap-3 sm:grid-cols-2">
+      <Card accent="rose">
+        <SectionTitle icon="🔴">Team 2</SectionTitle>
+        <div className="grid gap-4 sm:grid-cols-2">
           <PlayerPicker
             label="Player 1"
             profiles={profiles}
@@ -216,59 +213,52 @@ export default function MatchForm({
             excludeIds={selectedIds.filter((id) => id !== team2Player2)}
           />
         </div>
-      </section>
+      </Card>
 
-      <section className="space-y-3">
-        <h2 className="text-lg font-semibold">Score</h2>
-        <div className="flex items-center gap-4">
-          <input
+      <Card>
+        <SectionTitle icon="🏆">Final score</SectionTitle>
+        <div className="flex items-center gap-3">
+          <Input
             type="number"
             min={0}
             value={team1Score}
             onChange={(e) => setTeam1Score(e.target.value)}
             placeholder="0"
-            className="min-h-14 flex-1 rounded-xl border border-zinc-300 bg-white px-4 text-center text-3xl font-bold font-mono dark:border-zinc-700 dark:bg-zinc-900"
+            className="min-h-16 text-center text-3xl font-bold font-mono"
             required
           />
-          <span className="text-2xl font-light text-zinc-400">–</span>
-          <input
+          <span className="shrink-0 text-2xl font-light text-zinc-300 dark:text-zinc-600">
+            –
+          </span>
+          <Input
             type="number"
             min={0}
             value={team2Score}
             onChange={(e) => setTeam2Score(e.target.value)}
             placeholder="0"
-            className="min-h-14 flex-1 rounded-xl border border-zinc-300 bg-white px-4 text-center text-3xl font-bold font-mono dark:border-zinc-700 dark:bg-zinc-900"
+            className="min-h-16 text-center text-3xl font-bold font-mono"
             required
           />
         </div>
-      </section>
+        <p className="mt-3 text-xs leading-relaxed text-zinc-500">
+          ELO updates automatically — team average vs team average (K=32).
+        </p>
+      </Card>
 
-      <label className="block">
-        <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-          Notes (optional)
-        </span>
-        <textarea
+      <Field label="Notes (optional)">
+        <Textarea
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
-          rows={2}
-          className="w-full rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-base dark:border-zinc-700 dark:bg-zinc-900"
-          placeholder="Rematch, tournament round, etc."
+          rows={3}
+          placeholder="Rematch, tournament round, trash talk…"
         />
-      </label>
+      </Field>
 
-      {error && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/50 dark:text-red-300">
-          {error}
-        </p>
-      )}
+      {error && <Alert>{error}</Alert>}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="min-h-12 w-full rounded-xl bg-amber-500 px-4 py-3 text-base font-semibold text-white transition-colors hover:bg-amber-600 disabled:opacity-50"
-      >
-        {loading ? "Saving…" : "Log Match"}
-      </button>
+      <Button type="submit" disabled={loading}>
+        {loading ? "Saving…" : "Log match"}
+      </Button>
     </form>
   );
 }

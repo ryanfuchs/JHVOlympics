@@ -1,60 +1,117 @@
 "use client";
 
-import LeaderboardTable from "@/components/LeaderboardTable";
-import type { GameType, PlayerStats, PlayerStatsByGame } from "@/lib/types/database";
+import LeaderboardTable, {
+  type LeaderboardRow,
+} from "@/components/LeaderboardTable";
+import PageHeader from "@/components/ui/PageHeader";
+import SegmentControl from "@/components/ui/SegmentControl";
+import type {
+  GameType,
+  PlayerEloByGame,
+  PlayerEloOverall,
+  PlayerStats,
+  PlayerStatsByGame,
+} from "@/lib/types/database";
+import { chipActiveClassName, chipClassName, chipInactiveClassName } from "@/lib/styles";
 import { useMemo, useState } from "react";
 
 type LeaderboardClientProps = {
   overallStats: PlayerStats[];
   statsByGame: PlayerStatsByGame[];
+  eloOverall: PlayerEloOverall[];
+  eloByGame: PlayerEloByGame[];
   gameTypes: GameType[];
   currentUserId: string;
 };
 
+function buildOverallRows(
+  stats: PlayerStats[],
+  eloOverall: PlayerEloOverall[]
+): LeaderboardRow[] {
+  const eloMap = new Map(eloOverall.map((e) => [e.user_id, e.rating]));
+
+  return stats
+    .filter((s) => s.total_matches > 0)
+    .map((s) => ({
+      user_id: s.user_id,
+      display_name: s.display_name,
+      wins: s.wins,
+      losses: s.losses,
+      ties: s.ties,
+      win_rate: s.win_rate,
+      total_matches: s.total_matches,
+      rating: eloMap.get(s.user_id) ?? null,
+    }));
+}
+
+function buildGameRows(
+  statsByGame: PlayerStatsByGame[],
+  eloByGame: PlayerEloByGame[],
+  gameTypeId: string
+): LeaderboardRow[] {
+  const gameStats = statsByGame.filter((s) => s.game_type_id === gameTypeId);
+  const eloMap = new Map(
+    eloByGame
+      .filter((e) => e.game_type_id === gameTypeId)
+      .map((e) => [e.user_id, e.rating])
+  );
+
+  return gameStats.map((s) => ({
+    user_id: s.user_id,
+    display_name: s.display_name,
+    wins: s.wins,
+    losses: s.losses,
+    ties: s.ties,
+    win_rate: s.win_rate,
+    total_matches: s.total_matches,
+    rating: eloMap.get(s.user_id) ?? null,
+  }));
+}
+
 export default function LeaderboardClient({
   overallStats,
   statsByGame,
+  eloOverall,
+  eloByGame,
   gameTypes,
   currentUserId,
 }: LeaderboardClientProps) {
   const [selectedGame, setSelectedGame] = useState<string>("overall");
+  const [sortBy, setSortBy] = useState<"elo" | "wins">("elo");
 
-  const displayedStats = useMemo(() => {
+  const displayedRows = useMemo(() => {
     if (selectedGame === "overall") {
-      return overallStats.filter((s) => s.total_matches > 0);
+      return buildOverallRows(overallStats, eloOverall);
     }
-    return statsByGame
-      .filter((s) => s.game_type_id === selectedGame)
-      .map((s) => ({
-        user_id: s.user_id,
-        display_name: s.display_name,
-        total_matches: s.total_matches,
-        wins: s.wins,
-        losses: s.losses,
-        ties: s.ties,
-        win_rate: s.win_rate,
-      }));
-  }, [selectedGame, overallStats, statsByGame]);
+    return buildGameRows(statsByGame, eloByGame, selectedGame);
+  }, [selectedGame, overallStats, statsByGame, eloOverall, eloByGame]);
 
   const gamesWithStats = gameTypes.filter((gt) =>
     statsByGame.some((s) => s.game_type_id === gt.id)
   );
 
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight">Leaderboard</h1>
-        <p className="mt-1 text-zinc-500">Rankings and win rates</p>
-      </header>
+    <div className="space-y-5">
+      <PageHeader
+        title="Leaderboard"
+        description="ELO ratings and win records"
+      />
 
-      <div className="flex gap-2 overflow-x-auto pb-1">
+      <SegmentControl
+        options={[
+          { value: "elo" as const, label: "By ELO" },
+          { value: "wins" as const, label: "By wins" },
+        ]}
+        value={sortBy}
+        onChange={setSortBy}
+      />
+
+      <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         <button
           type="button"
           onClick={() => setSelectedGame("overall")}
-          className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-            selectedGame === "overall"
-              ? "bg-amber-500 text-white"
-              : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+          className={`${chipClassName} ${
+            selectedGame === "overall" ? chipActiveClassName : chipInactiveClassName
           }`}
         >
           Overall
@@ -64,10 +121,8 @@ export default function LeaderboardClient({
             key={gt.id}
             type="button"
             onClick={() => setSelectedGame(gt.id)}
-            className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              selectedGame === gt.id
-                ? "bg-amber-500 text-white"
-                : "bg-zinc-100 text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300"
+            className={`${chipClassName} ${
+              selectedGame === gt.id ? chipActiveClassName : chipInactiveClassName
             }`}
           >
             {gt.icon} {gt.name}
@@ -75,7 +130,11 @@ export default function LeaderboardClient({
         ))}
       </div>
 
-      <LeaderboardTable stats={displayedStats} highlightUserId={currentUserId} />
+      <LeaderboardTable
+        rows={displayedRows}
+        highlightUserId={currentUserId}
+        sortBy={sortBy}
+      />
     </div>
   );
 }

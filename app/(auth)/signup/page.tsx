@@ -1,109 +1,69 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { createClient } from "@/lib/supabase/client";
+import { useActionState } from "react";
+import { signUpAction, type AuthResult } from "@/app/(auth)/actions";
+import Alert from "@/components/ui/Alert";
+import Button from "@/components/ui/Button";
+import Card from "@/components/ui/Card";
+import { Field } from "@/components/ui/Field";
+import Input from "@/components/ui/Input";
+
+const initialState: AuthResult = {};
 
 export default function SignupPage() {
-  const router = useRouter();
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError(null);
-    setLoading(true);
-
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { display_name: displayName.trim() },
-      },
-    });
-
-    if (authError) {
-      setError(authError.message);
-      setLoading(false);
-      return;
-    }
-
-    router.push("/");
-    router.refresh();
-  }
+  const [state, formAction, pending] = useActionState(signUpAction, initialState);
 
   return (
     <div className="flex min-h-full flex-col items-center justify-center px-4 py-12">
-      <div className="w-full max-w-sm space-y-8">
+      <div className="w-full max-w-sm space-y-6">
         <header className="text-center">
-          <p className="text-sm font-medium uppercase tracking-wider text-amber-600">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-3xl bg-gradient-to-b from-amber-400 to-amber-600 text-3xl shadow-lg shadow-amber-600/30">
+            🏆
+          </div>
+          <p className="text-xs font-bold uppercase tracking-[0.2em] text-amber-600">
             JHV Olympics
           </p>
-          <h1 className="mt-2 text-3xl font-bold">Join the league</h1>
-          <p className="mt-2 text-zinc-500">Create an account to start logging games</p>
+          <h1 className="mt-2 text-3xl font-bold tracking-tight">Join the league</h1>
+          <p className="mt-2 text-[15px] text-zinc-500">
+            Create an account to start logging games
+          </p>
         </header>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium">Display name</span>
-            <input
-              type="text"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              className="w-full min-h-11 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 dark:border-zinc-700 dark:bg-zinc-900"
-              required
-              autoComplete="name"
-            />
-          </label>
+        <Card>
+          <form action={formAction} className="space-y-4">
+            <Field label="Display name">
+              <Input type="text" name="displayName" required autoComplete="name" />
+            </Field>
 
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium">Email</span>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full min-h-11 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 dark:border-zinc-700 dark:bg-zinc-900"
-              required
-              autoComplete="email"
-            />
-          </label>
+            <Field label="Email">
+              <Input type="email" name="email" required autoComplete="email" />
+            </Field>
 
-          <label className="block">
-            <span className="mb-1.5 block text-sm font-medium">Password</span>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full min-h-11 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 dark:border-zinc-700 dark:bg-zinc-900"
-              required
-              minLength={6}
-              autoComplete="new-password"
-            />
-          </label>
+            <Field label="Password">
+              <Input
+                type="password"
+                name="password"
+                required
+                minLength={6}
+                autoComplete="new-password"
+              />
+            </Field>
 
-          {error && (
-            <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950/50 dark:text-red-300">
-              {error}
-            </p>
-          )}
+            {state.error && <Alert>{state.error}</Alert>}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="min-h-12 w-full rounded-xl bg-amber-500 font-semibold text-white hover:bg-amber-600 disabled:opacity-50"
-          >
-            {loading ? "Creating account…" : "Create account"}
-          </button>
-        </form>
+            <Button type="submit" disabled={pending}>
+              {pending ? "Creating account…" : "Create account"}
+            </Button>
+          </form>
+        </Card>
 
         <p className="text-center text-sm text-zinc-500">
           Already have an account?{" "}
-          <Link href="/login" className="font-medium text-amber-600">
+          <Link
+            href="/login"
+            className="font-semibold text-amber-600 hover:text-amber-700 dark:text-amber-400"
+          >
             Sign in
           </Link>
         </p>

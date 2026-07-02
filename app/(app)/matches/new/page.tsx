@@ -1,4 +1,5 @@
 import MatchForm from "@/components/MatchForm";
+import PageHeader from "@/components/ui/PageHeader";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function NewMatchPage() {
@@ -14,10 +15,10 @@ export default async function NewMatchPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight">Log Match</h1>
-        <p className="mt-1 text-zinc-500">Record a new competition</p>
-      </header>
+      <PageHeader
+        title="Log match"
+        description="Record a new competition"
+      />
 
       <MatchForm
         gameTypes={gameTypes ?? []}

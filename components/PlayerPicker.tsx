@@ -1,5 +1,7 @@
 "use client";
 
+import { Field } from "@/components/ui/Field";
+import Select from "@/components/ui/Select";
 import type { Profile } from "@/lib/types/database";
 
 type PlayerPickerProps = {
@@ -17,26 +19,29 @@ export default function PlayerPicker({
   onChange,
   excludeIds = [],
 }: PlayerPickerProps) {
-  const available = profiles.filter((p) => !excludeIds.includes(p.id) || p.id === value);
+  const available = profiles.filter(
+    (p) => !excludeIds.includes(p.id) || p.id === value
+  );
+  const selected = profiles.find((p) => p.id === value);
 
   return (
-    <label className="block">
-      <span className="mb-1.5 block text-sm font-medium text-zinc-700 dark:text-zinc-300">
-        {label}
-      </span>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full min-h-11 rounded-xl border border-zinc-300 bg-white px-3 py-2.5 text-base dark:border-zinc-700 dark:bg-zinc-900"
-        required
-      >
-        <option value="">Select player…</option>
+    <Field label={label}>
+      <Select value={value} onChange={(e) => onChange(e.target.value)} required>
+        <option value="">Choose player…</option>
         {available.map((profile) => (
           <option key={profile.id} value={profile.id}>
             {profile.display_name}
           </option>
         ))}
-      </select>
-    </label>
+      </Select>
+      {selected && (
+        <p className="mt-2 flex items-center gap-2 text-xs text-zinc-500">
+          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-amber-100 text-[11px] font-bold text-amber-700 dark:bg-amber-950 dark:text-amber-300">
+            {selected.display_name.charAt(0).toUpperCase()}
+          </span>
+          Selected: {selected.display_name}
+        </p>
+      )}
+    </Field>
   );
 }

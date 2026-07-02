@@ -108,6 +108,57 @@ export interface Database {
         };
         Relationships: [];
       };
+      player_ratings: {
+        Row: {
+          user_id: string;
+          game_type_id: string;
+          rating: number;
+          games_played: number;
+          updated_at: string;
+        };
+        Insert: {
+          user_id: string;
+          game_type_id: string;
+          rating?: number;
+          games_played?: number;
+          updated_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          game_type_id?: string;
+          rating?: number;
+          games_played?: number;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      match_elo_changes: {
+        Row: {
+          id: string;
+          match_id: string;
+          user_id: string;
+          rating_before: number;
+          rating_after: number;
+          rating_delta: number;
+        };
+        Insert: {
+          id?: string;
+          match_id: string;
+          user_id: string;
+          rating_before: number;
+          rating_after: number;
+          rating_delta: number;
+        };
+        Update: {
+          id?: string;
+          match_id?: string;
+          user_id?: string;
+          rating_before?: number;
+          rating_after?: number;
+          rating_delta?: number;
+        };
+        Relationships: [];
+      };
     };
     Views: {
       player_stats: {
@@ -137,6 +188,27 @@ export interface Database {
         };
         Relationships: [];
       };
+      player_elo_by_game: {
+        Row: {
+          user_id: string;
+          display_name: string;
+          game_type_id: string;
+          game_name: string;
+          game_icon: string;
+          rating: number;
+          games_played: number;
+        };
+        Relationships: [];
+      };
+      player_elo_overall: {
+        Row: {
+          user_id: string;
+          display_name: string;
+          rating: number;
+          games_played: number;
+        };
+        Relationships: [];
+      };
     };
     Functions: Record<string, never>;
     Enums: Record<string, never>;
@@ -150,6 +222,12 @@ export type MatchPlayer = Database["public"]["Tables"]["match_players"]["Row"];
 export type PlayerStats = Database["public"]["Views"]["player_stats"]["Row"];
 export type PlayerStatsByGame =
   Database["public"]["Views"]["player_stats_by_game"]["Row"];
+export type PlayerEloByGame =
+  Database["public"]["Views"]["player_elo_by_game"]["Row"];
+export type PlayerEloOverall =
+  Database["public"]["Views"]["player_elo_overall"]["Row"];
+export type MatchEloChange =
+  Database["public"]["Tables"]["match_elo_changes"]["Row"];
 
 export type MatchWithDetails = Match & {
   game_types: GameType;

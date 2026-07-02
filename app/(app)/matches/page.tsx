@@ -1,6 +1,8 @@
 import MatchCard from "@/components/MatchCard";
+import PageHeader from "@/components/ui/PageHeader";
 import { createClient } from "@/lib/supabase/server";
 import type { MatchWithDetails } from "@/lib/types/database";
+import { cardClassName } from "@/lib/styles";
 
 export default async function MatchesPage() {
   const supabase = await createClient();
@@ -21,10 +23,10 @@ export default async function MatchesPage() {
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight">Matches</h1>
-        <p className="mt-1 text-zinc-500">All competitions logged</p>
-      </header>
+      <PageHeader
+        title="Matches"
+        description="All competitions logged"
+      />
 
       {(matches as MatchWithDetails[] | null)?.length ? (
         <div className="space-y-3">
@@ -33,7 +35,9 @@ export default async function MatchesPage() {
           ))}
         </div>
       ) : (
-        <p className="rounded-2xl border border-dashed border-zinc-300 p-8 text-center text-zinc-500 dark:border-zinc-700">
+        <p
+          className={`${cardClassName} border-dashed text-center text-sm text-zinc-500`}
+        >
           No matches logged yet.
         </p>
       )}

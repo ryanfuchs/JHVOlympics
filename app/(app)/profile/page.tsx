@@ -1,4 +1,5 @@
 import ProfileForm from "@/components/ProfileForm";
+import PageHeader from "@/components/ui/PageHeader";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function ProfilePage() {
@@ -7,23 +8,38 @@ export default async function ProfilePage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: profile }, { data: stats }] = await Promise.all([
-    supabase.from("profiles").select("*").eq("id", user!.id).single(),
-    supabase
-      .from("player_stats")
-      .select("*")
-      .eq("user_id", user!.id)
-      .maybeSingle(),
-  ]);
+  const [{ data: profile }, { data: stats }, { data: eloOverall }, { data: eloByGame }] =
+    await Promise.all([
+      supabase.from("profiles").select("*").eq("id", user!.id).single(),
+      supabase
+        .from("player_stats")
+        .select("*")
+        .eq("user_id", user!.id)
+        .maybeSingle(),
+      supabase
+        .from("player_elo_overall")
+        .select("*")
+        .eq("user_id", user!.id)
+        .maybeSingle(),
+      supabase
+        .from("player_elo_by_game")
+        .select("*")
+        .eq("user_id", user!.id)
+        .order("game_name"),
+    ]);
 
   return (
     <div className="space-y-6">
-      <header>
-        <h1 className="text-3xl font-bold tracking-tight">Profile</h1>
-        <p className="mt-1 text-zinc-500">Manage your account</p>
-      </header>
+      <PageHeader title="Profile" description="Manage your account" />
 
-      {profile && <ProfileForm profile={profile} stats={stats} />}
+      {profile && (
+        <ProfileForm
+          profile={profile}
+          stats={stats}
+          eloOverall={eloOverall}
+          eloByGame={eloByGame ?? []}
+        />
+      )}
     </div>
   );
 }

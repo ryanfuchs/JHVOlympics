@@ -12,6 +12,8 @@ A mobile-first web app for you and your friends to log 2v2 competitions, track s
 
 - Email/password signup and login
 - Log matches with game type, 4 players (2 per side), scores, and notes
+- Pick an existing game or create a new one when logging
+- Automatic ELO ratings (team average vs team average, K=32) per game type
 - Match history and detail views
 - Leaderboards (overall and per game type)
 - Personal W-L-T record and win rate on dashboard and profile
@@ -42,6 +44,7 @@ In the Supabase dashboard, open **SQL Editor** and run the contents of:
 
 ```
 supabase/migrations/001_initial_schema.sql
+supabase/migrations/002_elo_ratings.sql
 ```
 
 Or, if you use the Supabase CLI:

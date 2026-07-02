@@ -1,8 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafafa;
+  --background: #f4f4f5;
   --foreground: #18181b;
+  --card: #ffffff;
+  --accent: #f59e0b;
+  --accent-soft: rgba(245, 158, 11, 0.12);
 }
 
 @theme inline {
@@ -16,6 +19,8 @@
   :root {
     --background: #09090b;
     --foreground: #fafafa;
+    --card: #18181b;
+    --accent-soft: rgba(245, 158, 11, 0.15);
   }
 }
 
@@ -25,9 +30,37 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, var(--accent-soft), transparent),
+    radial-gradient(ellipse 60% 40% at 100% 100%, rgba(59, 130, 246, 0.06), transparent);
+  pointer-events: none;
+}
+
 input,
 select,
 textarea,
 button {
   font-size: 16px;
+}
+
+select option {
+  background: white;
+  color: #18181b;
+}
+
+@media (prefers-color-scheme: dark) {
+  select option {
+    background: #18181b;
+    color: #fafafa;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
 }
