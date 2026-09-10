@@ -63,6 +63,9 @@ Go to **SQL Editor → New query**, then run each file in order:
 
 1. `supabase/migrations/001_initial_schema.sql`
 2. `supabase/migrations/002_elo_ratings.sql`
+3. `supabase/migrations/003_icon_keys.sql`
+4. `supabase/migrations/004_guest_player.sql`
+5. `supabase/migrations/005_guest_display_name.sql`
 
 Click **Run** after pasting each file. You should see “Success” with no errors.
 

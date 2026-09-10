@@ -35,9 +35,21 @@ type ValidChange = EloChangeRow & {
   profiles: { display_name: string };
 };
 
-function computeOverallRating(gameRatings: Map<string, number>): number {
-  const values = [...gameRatings.values()];
-  return Math.round(values.reduce((sum, rating) => sum + rating, 0) / values.length);
+type GameRating = { rating: number; games: number };
+
+/**
+ * Weighted by games played, matching the `player_elo_overall` view. A flat
+ * average let a single lucky match in one game type count as much as fifty in
+ * another.
+ */
+function computeOverallRating(gameRatings: Map<string, GameRating>): number {
+  let weighted = 0;
+  let games = 0;
+  for (const entry of gameRatings.values()) {
+    weighted += entry.rating * entry.games;
+    games += entry.games;
+  }
+  return games > 0 ? Math.round(weighted / games) : DEFAULT_ELO;
 }
 
 function formatChartDate(iso: string): string {
@@ -58,7 +70,7 @@ export function buildEloHistory(changes: EloChangeRow[]) {
         new Date(b.matches.played_at).getTime()
     );
 
-  const userGameRatings = new Map<string, Map<string, number>>();
+  const userGameRatings = new Map<string, Map<string, GameRating>>();
   const userNames = new Map<string, string>();
   const events: Array<{
     userId: string;
@@ -75,7 +87,11 @@ export function buildEloHistory(changes: EloChangeRow[]) {
     }
 
     const gameRatings = userGameRatings.get(row.user_id)!;
-    gameRatings.set(row.matches.game_type_id, row.rating_after);
+    const gameTypeId = row.matches.game_type_id;
+    gameRatings.set(gameTypeId, {
+      rating: row.rating_after,
+      games: (gameRatings.get(gameTypeId)?.games ?? 0) + 1,
+    });
 
     events.push({
       userId: row.user_id,

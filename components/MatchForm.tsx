@@ -247,6 +247,7 @@ export default function MatchForm({
         </div>
         <p className="mt-3 text-xs leading-relaxed text-zinc-500">
           ELO updates automatically — team average vs team average (K=32).
+          Need a fourth? Pick Üse Gast — no login, outsider ELO still counts.
         </p>
       </Card>
 

@@ -14,6 +14,7 @@ A mobile-first web app for logging 2v2 competitions, tracking scores by game typ
 
 - Email/password signup and login
 - Log matches with game type, 4 players (2 per side), scores, and notes
+- Pick **Üse Gast** as the fourth player when an outsider has no account — ELO still tracks
 - Pick an existing game or create a new one when logging
 - Automatic ELO ratings (team average vs team average, K=32) per game type
 - Match history and detail views
@@ -64,6 +65,8 @@ In the Supabase dashboard, open **SQL Editor** and run the contents of:
 supabase/migrations/001_initial_schema.sql
 supabase/migrations/002_elo_ratings.sql
 supabase/migrations/003_icon_keys.sql
+supabase/migrations/004_guest_player.sql
+supabase/migrations/005_guest_display_name.sql
 ```
 
 Or, if you use the Supabase CLI:
@@ -102,7 +105,7 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ## Invite friends
 
-Share the deployed URL. Friends create an account with email/password, then appear in the player picker when logging matches.
+Share the deployed URL. Friends create an account with email/password, then appear in the player picker when logging matches. If a fourth person has no account, pick **Üse Gast** — they cannot log in, but their ELO is tracked.
 
 ## Project structure
 
