@@ -15,18 +15,21 @@ export interface Database {
           display_name: string;
           avatar_url: string | null;
           created_at: string;
+          is_guest: boolean;
         };
         Insert: {
           id: string;
           display_name: string;
           avatar_url?: string | null;
           created_at?: string;
+          is_guest?: boolean;
         };
         Update: {
           id?: string;
           display_name?: string;
           avatar_url?: string | null;
           created_at?: string;
+          is_guest?: boolean;
         };
         Relationships: [];
       };
@@ -170,6 +173,7 @@ export interface Database {
           losses: number;
           ties: number;
           win_rate: number;
+          is_guest: boolean;
         };
         Relationships: [];
       };
@@ -185,6 +189,7 @@ export interface Database {
           losses: number;
           ties: number;
           win_rate: number;
+          is_guest: boolean;
         };
         Relationships: [];
       };
@@ -197,6 +202,7 @@ export interface Database {
           game_icon: string;
           rating: number;
           games_played: number;
+          is_guest: boolean;
         };
         Relationships: [];
       };
@@ -206,6 +212,106 @@ export interface Database {
           display_name: string;
           rating: number;
           games_played: number;
+          is_guest: boolean;
+        };
+        Relationships: [];
+      };
+      current_season: {
+        Row: {
+          season_key: string;
+        };
+        Relationships: [];
+      };
+      season_standings: {
+        Row: {
+          season_key: string;
+          user_id: string;
+          display_name: string;
+          is_guest: boolean;
+          matches: number;
+          wins: number;
+          losses: number;
+          ties: number;
+          elo_delta: number;
+          win_rate: number;
+          qualified: boolean;
+          rank: number;
+        };
+        Relationships: [];
+      };
+      season_event_standings: {
+        Row: {
+          season_key: string;
+          game_type_id: string;
+          game_name: string;
+          game_icon: string;
+          user_id: string;
+          display_name: string;
+          is_guest: boolean;
+          matches: number;
+          wins: number;
+          losses: number;
+          ties: number;
+          elo_delta: number;
+          win_rate: number;
+          qualified: boolean;
+          rank: number;
+        };
+        Relationships: [];
+      };
+      season_champions: {
+        Row: {
+          season_key: string;
+          user_id: string;
+          display_name: string;
+          matches: number;
+          wins: number;
+          losses: number;
+          ties: number;
+          win_rate: number;
+          elo_delta: number;
+        };
+        Relationships: [];
+      };
+      season_medals: {
+        Row: {
+          season_key: string;
+          game_type_id: string;
+          game_name: string;
+          game_icon: string;
+          user_id: string;
+          display_name: string;
+          medal: "gold" | "silver" | "bronze";
+        };
+        Relationships: [];
+      };
+      season_medal_table: {
+        Row: {
+          user_id: string;
+          display_name: string;
+          titles: number;
+          gold: number;
+          silver: number;
+          bronze: number;
+          total: number;
+        };
+        Relationships: [];
+      };
+      teammate_pairs: {
+        Row: {
+          player_a_id: string;
+          player_a_name: string;
+          player_a_is_guest: boolean;
+          player_b_id: string;
+          player_b_name: string;
+          player_b_is_guest: boolean;
+          matches_together: number;
+          wins: number;
+          losses: number;
+          ties: number;
+          elo_delta: number;
+          win_rate: number;
+          chemistry: number;
         };
         Relationships: [];
       };
@@ -226,6 +332,17 @@ export type PlayerEloByGame =
   Database["public"]["Views"]["player_elo_by_game"]["Row"];
 export type PlayerEloOverall =
   Database["public"]["Views"]["player_elo_overall"]["Row"];
+export type SeasonStanding =
+  Database["public"]["Views"]["season_standings"]["Row"];
+export type SeasonEventStanding =
+  Database["public"]["Views"]["season_event_standings"]["Row"];
+export type SeasonChampion =
+  Database["public"]["Views"]["season_champions"]["Row"];
+export type SeasonMedal = Database["public"]["Views"]["season_medals"]["Row"];
+export type SeasonMedalTableRow =
+  Database["public"]["Views"]["season_medal_table"]["Row"];
+export type TeammatePair =
+  Database["public"]["Views"]["teammate_pairs"]["Row"];
 export type MatchEloChange =
   Database["public"]["Tables"]["match_elo_changes"]["Row"];
 

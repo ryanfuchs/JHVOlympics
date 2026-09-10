@@ -1,5 +1,6 @@
 import Link from "next/link";
 import EloHistoryChart from "@/components/EloHistoryChart";
+import SeasonSummaryCard from "@/components/SeasonSummaryCard";
 import MatchCard from "@/components/MatchCard";
 import PageHeader from "@/components/ui/PageHeader";
 import { createClient } from "@/lib/supabase/server";
@@ -7,6 +8,7 @@ import { buildEloHistory, type EloChangeRow } from "@/lib/elo-history";
 import type { MatchWithDetails } from "@/lib/types/database";
 import { cardClassName, textAccent } from "@/lib/styles";
 import { APP_NAME, APP_SLOGAN } from "@/lib/branding";
+import { seasonKeyFor } from "@/lib/seasons";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -14,8 +16,13 @@ export default async function DashboardPage() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const [{ data: stats }, { data: eloOverall }, { data: recentMatches }, { data: eloChanges }] =
-    await Promise.all([
+  const [
+    { data: stats },
+    { data: eloOverall },
+    { data: recentMatches },
+    { data: eloChanges },
+    { data: currentSeason },
+  ] = await Promise.all([
       supabase
         .from("player_stats")
         .select("*")
@@ -50,7 +57,13 @@ export default async function DashboardPage() {
           profiles!inner ( display_name )
         `
         ),
+      supabase.from("current_season").select("season_key").maybeSingle(),
     ]);
+
+  const { data: seasonStandings } = await supabase
+    .from("season_standings")
+    .select("*")
+    .eq("season_key", currentSeason?.season_key ?? seasonKeyFor(new Date()));
 
   const { players, chartData } = buildEloHistory(
     (eloChanges as EloChangeRow[] | null) ?? []
@@ -103,6 +116,12 @@ export default async function DashboardPage() {
           </Link>
         </div>
       </section>
+
+      <SeasonSummaryCard
+        seasonKey={currentSeason?.season_key ?? seasonKeyFor(new Date())}
+        standings={seasonStandings ?? []}
+        currentUserId={user!.id}
+      />
 
       <section className="space-y-4">
         <div>

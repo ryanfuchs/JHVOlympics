@@ -4,6 +4,7 @@ import LeaderboardTable, {
   type LeaderboardRow,
 } from "@/components/LeaderboardTable";
 import GameIcon from "@/components/GameIcon";
+import RanksTabs from "@/components/RanksTabs";
 import PageHeader from "@/components/ui/PageHeader";
 import SegmentControl from "@/components/ui/SegmentControl";
 import type {
@@ -42,6 +43,7 @@ function buildOverallRows(
       win_rate: s.win_rate,
       total_matches: s.total_matches,
       rating: eloMap.get(s.user_id) ?? null,
+      is_guest: s.is_guest,
     }));
 }
 
@@ -66,6 +68,7 @@ function buildGameRows(
     win_rate: s.win_rate,
     total_matches: s.total_matches,
     rating: eloMap.get(s.user_id) ?? null,
+    is_guest: s.is_guest,
   }));
 }
 
@@ -97,6 +100,8 @@ export default function LeaderboardClient({
         title="Leaderboard"
         description="ELO ratings and win records"
       />
+
+      <RanksTabs />
 
       <SegmentControl
         options={[

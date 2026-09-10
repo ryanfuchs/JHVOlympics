@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { isGuestName } from "@/lib/guest";
 import { redirect } from "next/navigation";
 
 export type AuthResult = {
@@ -17,6 +18,10 @@ export async function signUpAction(
 
   if (!displayName || !email || !password) {
     return { error: "All fields are required." };
+  }
+
+  if (isGuestName(displayName)) {
+    return { error: "That display name is reserved for the guest player." };
   }
 
   if (password.length < 6) {

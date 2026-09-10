@@ -15,6 +15,7 @@ import type {
   PlayerStats,
   Profile,
 } from "@/lib/types/database";
+import { isGuestName } from "@/lib/guest";
 
 type ProfileFormProps = {
   profile: Profile;
@@ -41,10 +42,17 @@ export default function ProfileForm({
     setError(null);
     setMessage(null);
 
+    const nextName = displayName.trim();
+    if (isGuestName(nextName)) {
+      setError("That display name is reserved for the guest player.");
+      setLoading(false);
+      return;
+    }
+
     const supabase = createClient();
     const { error: updateError } = await supabase
       .from("profiles")
-      .update({ display_name: displayName.trim() })
+      .update({ display_name: nextName })
       .eq("id", profile.id);
 
     if (updateError) {

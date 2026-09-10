@@ -1,3 +1,4 @@
+import { isGuestPlayer } from "@/lib/guest";
 import { cardClassName } from "@/lib/styles";
 
 export type LeaderboardRow = {
@@ -9,6 +10,7 @@ export type LeaderboardRow = {
   win_rate: number;
   total_matches: number;
   rating: number | null;
+  is_guest?: boolean | null;
 };
 
 type LeaderboardTableProps = {
@@ -66,7 +68,16 @@ export default function LeaderboardTable({
               <td className="px-4 py-3.5 font-mono text-xs text-zinc-400">
                 {index + 1}
               </td>
-              <td className="px-4 py-3.5 font-semibold">{row.display_name}</td>
+              <td className="px-4 py-3.5 font-semibold">
+                <span className="inline-flex items-center gap-1.5">
+                  {row.display_name}
+                  {isGuestPlayer(row) && (
+                    <span className="rounded-full bg-stone-100 px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-stone-500 dark:bg-stone-800 dark:text-stone-400">
+                      guest
+                    </span>
+                  )}
+                </span>
+              </td>
               <td className="px-4 py-3.5 text-right font-mono font-bold text-zinc-900 dark:text-zinc-100">
                 {row.rating ?? "—"}
               </td>
